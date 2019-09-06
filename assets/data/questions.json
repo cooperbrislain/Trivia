@@ -1,0 +1,21 @@
+[
+    {
+        "question" : "what is your favorite color?",
+        "answers" :
+            [
+                "Red",
+                "Green",
+                "Blue"
+            ]
+    },
+    {
+        "question" : "what is your quest?",
+        "answers" :
+            [
+                "To find the grail",
+                "To plunder the resources of indiginous people",
+                "To spread racist euro-centric ideology",
+                "To seize the means of production"
+            ]
+    }
+]
