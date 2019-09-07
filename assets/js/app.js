@@ -32,13 +32,19 @@ let TriviaGame = {
     },
     tick: function() {
         TriviaGame.time_left--;
-        if (TriviaGame.time_left <= 0) clearInterval(TriviaGame.timer);
-        $('.timer').html(TriviaGame.time_left);
-        $('.timer').addClass('ticking');
-        $('.timer').on('animationend', () => { 
-            console.log('end');
-            $('.timer').removeClass('ticking'); 
-        });
+        if (TriviaGame.time_left <= 0) {
+            console.log('out of time');
+            $('button.answer.correct').addClass('reveal');
+            $('button.answer.correct').one('animationend', () => { TriviaGame.renderQuestion() })
+            clearInterval(TriviaGame.timer);
+        } else {
+            $('.timer').html(TriviaGame.time_left);
+            $('.timer').addClass('ticking');
+            $('.timer').on('animationend', () => { 
+                $('.timer').removeClass('ticking'); 
+            });
+        }
+        
     },
     start: function() {
         this.score = 0;
