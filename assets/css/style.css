@@ -33,6 +33,41 @@
     }
 }
 
+@keyframes reveal {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.25);
+        background-color: green;
+    }
+}
+
+@keyframes timertick {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.jumbotron {
+    height: 100vh;
+} 
+
+.jumbotron.splash h1 {
+    margin: auto auto;
+    text-align: center;
+    height: 50px;
+}
+
+h3.question {
+    text-align: center;
+}
+
 button.answer {
     flex-grow: 1;
     padding: 50px;
@@ -74,11 +109,15 @@ button:not(.woot):hover {
     animation-iteration-count: 1;
 }
 
-.answers button.correct {
-    border: 1px solid green;
+.answers button.correct.reveal {
+    animation-name: reveal;
+    animation-duration: 1.5s;
+    animation-iteration-count: 1;
 }
 
 .timer {
     font-size: 100px;
     text-align: center;
+    animation-name: timertick;
+    animation-duration: 1s;
 }

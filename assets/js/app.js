@@ -1,11 +1,12 @@
 let TriviaGame = {
     score: 0,
-    time_per_question: 10,
+    time_per_question: 15,
     time_left: 0,
     timer: null,
     renderSplash: function() {
         $('body').empty();
-        $splash = $('<div class="jumbotron splash">').text('Click anywhere');
+        $splash = $('<div class="jumbotron splash">')
+            .append($('<h1>').text('Click anywhere'));
         $splash.appendTo($('body'));
     },
     renderQuestion: function() {
@@ -25,7 +26,7 @@ let TriviaGame = {
         let shuff = shuffle($_answers);
         $_answers.forEach( $answer => { $answer.appendTo($answers) });
         $answers.appendTo('.jumbotron');
-        $('<div class="timer">').appendTo('body');
+        $('<div class="timer">').appendTo('.jumbotron');
         this.time_left = this.time_per_question;
         this.timer = setInterval(this.tick, 1000);
     },
@@ -78,6 +79,7 @@ $(document).ready(function() {
     $(document).on('click', 'button.answer.incorrect', function() {
         clearInterval(TriviaGame.timer);
         $(this).addClass('nope');
+        $('.button.answer.correct').addClass('reveal');
         $(this).one('animationend', () => { TriviaGame.renderQuestion() })
     });
 });
