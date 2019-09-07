@@ -13,18 +13,14 @@ const TriviaGame = {
         const Question = Questions[which];
         $('<div class="jumbotron">').appendTo($('body'));
         $('<h3 class="question">').text(Question.question).appendTo('.jumbotron');
-        $answers = $('<div class="answers">');
-        $('<button class="btn answer correct">')
-            .text(Question.correct_answer)
-            .appendTo($answers);
+        let $answers = $('<div class="answers">');
+        let $_answers = [];
+        $_answers.push($('<button class="btn answer correct">').text(Question.correct_answer));
         Question.incorrect_answers.forEach(Answer => {
-            $('<button class="btn answer incorrect">')
-                .text(Answer)
-                .appendTo($answers);
+            $_answers.push($('<button class="btn answer incorrect">').text(Answer));
         });
-        for (let i=0; i<$answers.length; i++) {
-            $answers.eq(i).before(Math.floor(Math.random()*$answers.length));
-        }
+        let shuff = shuffle($_answers);
+        $_answers.forEach( $answer => { $answer.appendTo($answers) });
         $answers.appendTo('.jumbotron');
     },
     renderAnswer: function(answerText) {
@@ -46,6 +42,19 @@ const TriviaGame = {
     }
 }
 
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ * Found here: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+ */
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 let Questions = [];
 
 $(document).ready(function() {
@@ -54,11 +63,13 @@ $(document).ready(function() {
         TriviaGame.renderQuestion();
     });
 
-    $(document).on('click', '.card.answer.correct', function() {
-        $(this).css('background-color', 'green');
+    $(document).on('click', 'button.answer.correct', function() {
+        $(this).addClass('woot');
+        $(this).one('animationend', () => { TriviaGame.renderQuestion() })
     });
 
-    $(document).on('click', '.card.answer.incorrect', function() {
+    $(document).on('click', 'button.answer.incorrect', function() {
         $(this).css('background-color', 'red');
     });
+
 });

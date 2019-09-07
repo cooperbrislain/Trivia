@@ -4,13 +4,23 @@
     to { transform: scale(1); }
 }
   
+@keyframes woot {
+    from { 
+        transform: scale(1); 
+    }
+    to { 
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
 button {
     flex-grow: 1;
     padding: 50px;
     font-size: 28px
 }
 
-button:hover {
+button:not(.woot):hover {
     animation-name: pulse;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -21,4 +31,15 @@ button:hover {
     display: flex;
     width: 100%;
     align-content: center;
+    font-weight: 900;
+}
+
+.answers button.woot {
+    animation-name: woot;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+
+.answers button.correct {
+    border: 1px solid green;
 }
