@@ -10,10 +10,25 @@ const TriviaGame = {
         if (typeof which === 'undefined') {
             which = Math.floor(Math.random()*Questions.length);
         }
-        $('<div class="jumbotron">').appendTo($('body'))
-            .append($('<div class="row">'))
-            .append($('<div class="row">'));
-        console.log(which);
+        const Question = Questions[which];
+        $('<div class="jumbotron">').appendTo($('body'));
+        $('<h3 class="question">').text(Question.question).appendTo('.jumbotron');
+        $answers = $('<div class="answers">');
+        $('<button class="btn answer correct">')
+            .text(Question.correct_answer)
+            .appendTo($answers);
+        Question.incorrect_answers.forEach(Answer => {
+            $('<button class="btn answer incorrect">')
+                .text(Answer)
+                .appendTo($answers);
+        });
+        for (let i=0; i<$answers.length; i++) {
+            $answers.eq(i).before(Math.floor(Math.random()*$answers.length));
+        }
+        $answers.appendTo('.jumbotron');
+    },
+    renderAnswer: function(answerText) {
+
     },
     answerQuestion: function(which) {
 
@@ -23,9 +38,10 @@ const TriviaGame = {
         this.renderSplash();
     },
     load: function() {
-        $.getJSON('./assets/data/questions.json')
+        $.getJSON('https://opentdb.com/api.php?amount=10&category=18&difficulty=medium&type=multiple')
         .done(function(data) {
-            Questions = data;
+            Questions = data.results;
+            TriviaGame.start();
         });
     }
 }
@@ -33,8 +49,16 @@ const TriviaGame = {
 let Questions = [];
 
 $(document).ready(function() {
-    TriviaGame.start();
+    TriviaGame.load();
     $(document).on('click', '.splash', function() {
         TriviaGame.renderQuestion();
+    });
+
+    $(document).on('click', '.card.answer.correct', function() {
+        $(this).css('background-color', 'green');
+    });
+
+    $(document).on('click', '.card.answer.incorrect', function() {
+        $(this).css('background-color', 'red');
     });
 });
