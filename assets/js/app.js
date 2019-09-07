@@ -15,12 +15,12 @@ let TriviaGame = {
         }
         const Question = Questions.pop();
         $('<div class="jumbotron">').appendTo($('body'));
-        $('<h3 class="question">').text(Question.question).appendTo('.jumbotron');
+        $('<h3 class="question">').html(Question.question).appendTo('.jumbotron');
         let $answers = $('<div class="answers">');
         let $_answers = [];
-        $_answers.push($('<button class="btn answer correct">').text(Question.correct_answer));
+        $_answers.push($('<button class="btn answer correct">').html(Question.correct_answer));
         Question.incorrect_answers.forEach(Answer => {
-            $_answers.push($('<button class="btn answer incorrect">').text(Answer));
+            $_answers.push($('<button class="btn answer incorrect">').html(Answer));
         });
         let shuff = shuffle($_answers);
         $_answers.forEach( $answer => { $answer.appendTo($answers) });
@@ -30,10 +30,9 @@ let TriviaGame = {
         this.timer = setInterval(this.tick, 1000);
     },
     tick: function() {
-        if (TriviaGame.time_left <= 0) clearInterval(TriviaGame.timer);
-        console.log(TriviaGame.time_left);
         TriviaGame.time_left--;
-        $('.timer').text(TriviaGame.time_left);
+        if (TriviaGame.time_left <= 0) clearInterval(TriviaGame.timer);
+        $('.timer').html(TriviaGame.time_left);
     },
     start: function() {
         this.score = 0;
@@ -71,12 +70,14 @@ $(document).ready(function() {
 
     $(document).on('click', 'button.answer.correct', function() {
         clearInterval(TriviaGame.timer);
-        TriviaGame.score++;
+        TriviaGame.score+=TriviaGame.time_left;
         $(this).addClass('woot');
         $(this).one('animationend', () => { TriviaGame.renderQuestion() })
     });
 
     $(document).on('click', 'button.answer.incorrect', function() {
-        $(this).css('background-color', 'red');
+        clearInterval(TriviaGame.timer);
+        $(this).addClass('nope');
+        $(this).one('animationend', () => { TriviaGame.renderQuestion() })
     });
 });

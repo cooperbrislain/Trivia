@@ -8,19 +8,43 @@
     from { 
         transform: scale(1); 
     }
+    50% {
+        background-color: green;
+    }
     to { 
         transform: scale(2);
         opacity: 0;
     }
 }
 
-button {
+@keyframes nope {
+    from {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.25);
+    }
+    75% {
+        background-color: red;
+        opacity: 0;
+    }
+    to {
+        transform: scale(0);
+    }
+}
+
+button.answer {
     flex-grow: 1;
     padding: 50px;
-    font-size: 28px
+    font-size: 30px;
+    border-radius: 25px;
+    font-weight: 900;
+    background-color: #6161f1;
+    color: white;
 }
 
 button:not(.woot):hover {
+    color: white;
     animation-name: pulse;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -34,8 +58,18 @@ button:not(.woot):hover {
     font-weight: 900;
 }
 
+.answers button {
+    margin: 25px;
+}
+
 .answers button.woot {
     animation-name: woot;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+
+.answers button.nope {
+    animation-name: nope;
     animation-duration: 1s;
     animation-iteration-count: 1;
 }
