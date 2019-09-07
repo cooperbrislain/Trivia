@@ -79,7 +79,8 @@ $(document).ready(function() {
     $(document).on('click', 'button.answer.incorrect', function() {
         clearInterval(TriviaGame.timer);
         $(this).addClass('nope');
-        $('.button.answer.correct').addClass('reveal');
-        $(this).one('animationend', () => { TriviaGame.renderQuestion() })
+        $('button.answer.correct').addClass('reveal');
+        $(this).one('animationend', () => { $(this).css('visibility', 'hidden') });
+        $('button.answer.correct').one('animationend', () => { TriviaGame.renderQuestion() })
     });
 });
