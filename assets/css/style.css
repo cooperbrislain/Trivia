@@ -58,6 +58,9 @@
         opacity: 1;
         transform: scale(1);
     }
+    10% {
+        transform: scale(1.1);
+    }
     to {
         transform: scale(0);
         opacity: 0;
@@ -126,8 +129,14 @@ button:not(.woot):hover {
 }
 
 .timer {
+    display: none;
+}
+
+.timer.ticking {
+    display: block;
     font-size: 100px;
     text-align: center;
     animation-name: timertick;
-    animation-duration: 1s;
+    animation-duration: 0.8s;
+    animation-iteration-count: 1;
 }

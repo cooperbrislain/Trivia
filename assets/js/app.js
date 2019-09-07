@@ -34,6 +34,11 @@ let TriviaGame = {
         TriviaGame.time_left--;
         if (TriviaGame.time_left <= 0) clearInterval(TriviaGame.timer);
         $('.timer').html(TriviaGame.time_left);
+        $('.timer').addClass('ticking');
+        $('.timer').on('animationend', () => { 
+            console.log('end');
+            $('.timer').removeClass('ticking'); 
+        });
     },
     start: function() {
         this.score = 0;
