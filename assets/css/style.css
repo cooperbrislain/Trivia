@@ -43,3 +43,8 @@ button:not(.woot):hover {
 .answers button.correct {
     border: 1px solid green;
 }
+
+.timer {
+    font-size: 100px;
+    text-align: center;
+}

@@ -1,16 +1,19 @@
-const TriviaGame = {
+let TriviaGame = {
     score: 0,
+    time_per_question: 10,
+    time_left: 0,
+    timer: null,
     renderSplash: function() {
         $('body').empty();
         $splash = $('<div class="jumbotron splash">').text('Click anywhere');
         $splash.appendTo($('body'));
     },
-    renderQuestion: function(which) {
+    renderQuestion: function() {
         $('body').empty();
         if (typeof which === 'undefined') {
             which = Math.floor(Math.random()*Questions.length);
         }
-        const Question = Questions[which];
+        const Question = Questions.pop();
         $('<div class="jumbotron">').appendTo($('body'));
         $('<h3 class="question">').text(Question.question).appendTo('.jumbotron');
         let $answers = $('<div class="answers">');
@@ -22,12 +25,15 @@ const TriviaGame = {
         let shuff = shuffle($_answers);
         $_answers.forEach( $answer => { $answer.appendTo($answers) });
         $answers.appendTo('.jumbotron');
+        $('<div class="timer">').appendTo('body');
+        this.time_left = this.time_per_question;
+        this.timer = setInterval(this.tick, 1000);
     },
-    renderAnswer: function(answerText) {
-
-    },
-    answerQuestion: function(which) {
-
+    tick: function() {
+        if (TriviaGame.time_left <= 0) clearInterval(TriviaGame.timer);
+        console.log(TriviaGame.time_left);
+        TriviaGame.time_left--;
+        $('.timer').text(TriviaGame.time_left);
     },
     start: function() {
         this.score = 0;
@@ -36,7 +42,7 @@ const TriviaGame = {
     load: function() {
         $.getJSON('https://opentdb.com/api.php?amount=10&category=18&difficulty=medium&type=multiple')
         .done(function(data) {
-            Questions = data.results;
+            Questions = shuffle(data.results);
             TriviaGame.start();
         });
     }
@@ -64,6 +70,8 @@ $(document).ready(function() {
     });
 
     $(document).on('click', 'button.answer.correct', function() {
+        clearInterval(TriviaGame.timer);
+        TriviaGame.score++;
         $(this).addClass('woot');
         $(this).one('animationend', () => { TriviaGame.renderQuestion() })
     });
@@ -71,5 +79,4 @@ $(document).ready(function() {
     $(document).on('click', 'button.answer.incorrect', function() {
         $(this).css('background-color', 'red');
     });
-
 });
