@@ -3,24 +3,23 @@ let TriviaGame = {
     time_per_question: 15,
     time_left: 0,
     timer: null,
+    categories: [],
     renderSplash: function() {
         $('body').empty();
         $splash = $('<div class="jumbotron splash">')
             .append($('<h1>').text('SUPER ULTRA MEGA TRIVIA BLAST 2020 PRO EDITION'));
+        $form = $('<form>');
+        $form.append(
+            $('<div class="form-group">')
+            .append($('<label for="category">').text('Select a Category'))
+            .append('<select name="category" id="category" class="form-control">')
+        );
+        $form.append($('<button class="btn btn-large btn-primary start">').text('START!'));
+        $form.appendTo($splash);
         $splash.appendTo($('body'));
-        $.getJSON('https://opentdb.com/api_category.php')
-        .done(function(data) {
-            $form = $('<form>');
-            $form.append(
-                $('<div class="form-group">')
-                .append($('<label for="category">').text('Select a Category'))
-                .append('<select name="category" id="category" class="form-control">')
-            );
-            $form.appendTo('.splash');
-            data.trivia_categories.forEach(category => {
-                console.log(category);
-                $('select#category').append($('<option>').val(category.id).html(category.name));
-            });
+        this.categories.forEach(category => {
+            console.log(category);
+            $('select#category').append($('<option>').val(category.id).html(category.name));
         });
     },
     renderQuestion: function() {
@@ -60,16 +59,20 @@ let TriviaGame = {
         }
         
     },
-    start: function() {
-        this.score = 0;
-        this.renderSplash();
-    },
     load: function() {
-        $.getJSON('https://opentdb.com/api.php?amount=10&category=18&difficulty=medium&type=multiple')
+        $.getJSON('https://opentdb.com/api_category.php')
         .done(function(data) {
-            Questions = shuffle(data.results);
-            TriviaGame.start();
+            TriviaGame.categories = data.trivia_categories;
+            TriviaGame.renderSplash();
         });
+    },
+    startGame: category => {
+        this.score = 0;
+        $.getJSON(`https://opentdb.com/api.php?amount=10&category=${category}&difficulty=medium&type=multiple`)
+        .done((data) => { 
+            Questions = shuffle(data.results);
+            TriviaGame.renderQuestion(); 
+        })
     }
 }
 
@@ -90,9 +93,6 @@ let Questions = [];
 
 $(document).ready(function() {
     TriviaGame.load();
-    $(document).on('click', '.splash', function() {
-        //TriviaGame.renderQuestion();
-    });
 
     $(document).on('click', 'button.answer.correct', function() {
         clearInterval(TriviaGame.timer);
@@ -107,5 +107,10 @@ $(document).ready(function() {
         $('button.answer.correct').addClass('reveal');
         $(this).one('animationend', () => { $(this).css('visibility', 'hidden') });
         $('button.answer.correct').one('animationend', () => { TriviaGame.renderQuestion() })
+    });
+
+    $(document).on('click', 'button.start' , e => {
+        TriviaGame.startGame($('#category').val());
+        e.preventDefault();
     });
 });
