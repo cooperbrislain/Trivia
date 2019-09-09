@@ -6,8 +6,22 @@ let TriviaGame = {
     renderSplash: function() {
         $('body').empty();
         $splash = $('<div class="jumbotron splash">')
-            .append($('<h1>').text('Click anywhere'));
+            .append($('<h1>').text('SUPER ULTRA MEGA TRIVIA BLAST 2020 PRO EDITION'));
         $splash.appendTo($('body'));
+        $.getJSON('https://opentdb.com/api_category.php')
+        .done(function(data) {
+            $form = $('<form>');
+            $form.append(
+                $('<div class="form-group">')
+                .append($('<label for="category">').text('Select a Category'))
+                .append('<select name="category" id="category" class="form-control">')
+            );
+            $form.appendTo('.splash');
+            data.trivia_categories.forEach(category => {
+                console.log(category);
+                $('select#category').append($('<option>').val(category.id).html(category.name));
+            });
+        });
     },
     renderQuestion: function() {
         $('body').empty();
@@ -77,7 +91,7 @@ let Questions = [];
 $(document).ready(function() {
     TriviaGame.load();
     $(document).on('click', '.splash', function() {
-        TriviaGame.renderQuestion();
+        //TriviaGame.renderQuestion();
     });
 
     $(document).on('click', 'button.answer.correct', function() {
