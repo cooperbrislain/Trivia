@@ -60,19 +60,25 @@ let TriviaGame = {
         
     },
     load: function() {
-        $.getJSON('https://opentdb.com/api_category.php')
-        .done(function(data) {
+        $.ajax({ 
+            url: 'https://opentdb.com/api_category.php', 
+            method: 'GET'
+        })
+        .then(data => {
             TriviaGame.categories = data.trivia_categories;
             TriviaGame.renderSplash();
         });
     },
     startGame: category => {
         this.score = 0;
-        $.getJSON(`https://opentdb.com/api.php?amount=10&category=${category}&difficulty=medium&type=multiple`)
-        .done((data) => { 
+        $.ajax({
+            url: `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=medium&type=multiple`,
+            method: 'GET'
+        })
+        .then(data => { 
             Questions = shuffle(data.results);
             TriviaGame.renderQuestion(); 
-        })
+        });
     }
 }
 

@@ -1,21 +1,17 @@
-[
-    {
-        "question" : "what is your favorite color?",
-        "answers" :
-            [
-                "Red",
-                "Green",
-                "Blue"
+{
+    "response_code": 0,
+    "results": [
+        {
+            "category": "Science: Computers",
+            "type": "multiple",
+            "difficulty": "medium",
+            "question": "What does AD stand for in relation to Windows Operating Systems? ",
+            "correct_answer": "Active Directory",
+            "incorrect_answers": [
+                "Alternative Drive",
+                "Automated Database",
+                "Active Department"
             ]
-    },
-    {
-        "question" : "what is your quest?",
-        "answers" :
-            [
-                "To find the grail",
-                "To plunder the resources of indiginous people",
-                "To spread racist euro-centric ideology",
-                "To seize the means of production"
-            ]
-    }
-]
+        },
+    ]
+}
