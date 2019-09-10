@@ -23,6 +23,9 @@ let TriviaGame = {
         });
     },
     renderQuestion: function() {
+        if (!Questions.length) {
+            return this.renderScore();
+        }
         $('body').empty();
         const Question = Questions.pop();
         $('<div class="jumbotron">').appendTo($('body'));
@@ -39,6 +42,14 @@ let TriviaGame = {
         $('<div class="timer">').appendTo('.jumbotron');
         this.time_left = this.time_per_question;
         this.timer = setInterval(this.tick, 1000);
+    },
+    renderScore: function() {
+        $('body').empty();
+        let $scoreboard = $('<div class="jumbotron score">');
+        $scoreboard.append($('<h1>').text('Game Over'));
+        $scoreboard.append($('<h3>').text('Final Score:'));
+        $scoreboard.append($('<h2>').text(this.score));
+        $scoreboard.appendTo('body');
     },
     tick: function() {
         TriviaGame.time_left--;
