@@ -24,9 +24,6 @@ let TriviaGame = {
     },
     renderQuestion: function() {
         $('body').empty();
-        if (typeof which === 'undefined') {
-            which = Math.floor(Math.random()*Questions.length);
-        }
         const Question = Questions.pop();
         $('<div class="jumbotron">').appendTo($('body'));
         $('<h3 class="question">').html(Question.question).appendTo('.jumbotron');
@@ -101,6 +98,7 @@ $(document).ready(function() {
     TriviaGame.load();
 
     $(document).on('click', 'button.answer.correct', function() {
+        TriviaGame.score++;
         clearInterval(TriviaGame.timer);
         TriviaGame.score+=TriviaGame.time_left;
         $(this).addClass('woot');
@@ -120,3 +118,9 @@ $(document).ready(function() {
         e.preventDefault();
     });
 });
+
+const convert_to_spans = (selector) => {
+    $(selector).html($(selector).text.split(' ').reduce( (full_string, word, i) => {
+        full_string = full_string + `<span class="span-${i}">${word}</span>`;
+    }), '');
+}
