@@ -6,13 +6,15 @@ let TriviaGame = {
     categories: [],
     renderSplash: function() {
         $('body').empty();
-        $splash = $('<div class="jumbotron splash">')
-            .append($('<h1>').text('SUPER ULTRA MEGA TRIVIA BLAST 2020 PRO EDITION'));
-        $form = $('<form>');
+        let $splash = $('<div class="jumbotron splash">');
+        $splash.append('<h1>').text('SUPER ULTRA MEGA TRIVIA BLAST 2020 PRO EDITION');
+        let $form = $('<form>');
         $form.append(
             $('<div class="form-group">')
-            .append($('<label for="category">').text('Select a Category'))
-            .append('<select name="category" id="category" class="form-control">')
+                .append(
+                    $('<label for="category">').text('Select a Category')
+                )
+                .append('<select name="category" id="category" class="form-control">')
         );
         $form.append($('<button class="btn btn-large btn-primary start">').text('START!'));
         $form.appendTo($splash);
@@ -28,8 +30,8 @@ let TriviaGame = {
         }
         $('body').empty();
         const Question = Questions.pop();
-        $('<div class="jumbotron">').appendTo($('body'));
-        $('<h3 class="question">').html(Question.question).appendTo('.jumbotron');
+        let $jumbotron = $('<div class="jumbotron questions">');
+        $jumbotron.append('<h3 class="question">').html(Question.question);
         let $answers = $('<div class="answers">');
         let $_answers = [];
         $_answers.push($('<button class="btn answer correct">').html(Question.correct_answer));
@@ -37,9 +39,10 @@ let TriviaGame = {
             $_answers.push($('<button class="btn answer incorrect">').html(Answer));
         });
         let shuff = shuffle($_answers);
-        $_answers.forEach( $answer => { $answer.appendTo($answers) });
-        $answers.appendTo('.jumbotron');
-        $('<div class="timer">').appendTo('.jumbotron');
+        shuff.forEach( $answer => { $answers.append($answer); });
+        $jumbotron.append($answers);
+        $jumbotron.append('<div class="timer">');
+        $jumbotron.appendTo('body');
         this.time_left = this.time_per_question;
         this.timer = setInterval(this.tick, 1000);
     },
